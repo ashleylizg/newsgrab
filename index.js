@@ -10,9 +10,11 @@ const LOCATION_SELECTOR = 'li.active > a';
 const GOOGLE_NEWS_URL = 'https://www.google.com/search?q=COLLEGE&source=lnms&tbm=nws';
 const GOOGLE_RESULTS_SELECTOR = 'div[data-async-context="query:COLLEGE"] > div > g-card div[role="heading"]';
 
-fs.readFileSync('ny_colleges.txt').toString().split("\r\n").forEach(function(line, index, arr)
-{
-  if (index === arr.length - 1 && line === '') { return; }
+const listOfColleges = fs.readFileSync('ny_colleges.txt').toString().split("\r\n");
+
+for (let index = 0; index < listOfColleges.length; index +=1 ) {
+  let line = listOfColleges[index];
+  if (line === '') continue;
 
   let collegeName = line;
   console.log('Looking at ' + collegeName);
@@ -37,7 +39,6 @@ fs.readFileSync('ny_colleges.txt').toString().split("\r\n").forEach(function(lin
   //added below line
     let writeStream = fs.createWriteStream('output.txt');
   
-  
     for (var i = 0; i < results.length; i += 1) {
       var thisResultsTitle = await (await results[i].getProperty('innerHTML')).jsonValue();
       console.log(thisResultsTitle);
@@ -54,8 +55,8 @@ fs.readFileSync('ny_colleges.txt').toString().split("\r\n").forEach(function(lin
   
     await browser.close();
   })(); 
+}
 
-});
 console.log('End of processing');
 
 // End the program
