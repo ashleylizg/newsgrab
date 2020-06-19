@@ -12,6 +12,11 @@ const GOOGLE_RESULTS_SELECTOR = 'div[data-async-context="query:COLLEGE"] > div >
 
 const listOfColleges = fs.readFileSync('ny_colleges.txt').toString().split("\r\n");
 
+// try an async function here using the below code
+
+
+
+
 for (let index = 0; index < listOfColleges.length; index +=1 ) {
   let line = listOfColleges[index];
   if (line === '') continue;
@@ -28,17 +33,45 @@ for (let index = 0; index < listOfColleges.length; index +=1 ) {
   console.log(thisResultsSelector);
 
   // TODO logic for this college - still not sure about looping this and writing it, if functions are built correctly
- 
+ async function main () {
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
+
+  await page.goto(GOOGLE_NEWS_URL);
+  let results = await page.$$(GOOGLE_RESULTS_SELECTOR).waitForNavigation();
+//added below line
+  let writeStream = fs.createWriteStream('./output.txt');
+//added below line and closed following write stream
+  for (var i = 0; i < results.length; i += 1) {
+    var thisResultsTitle = await (await results[i].getProperty('innerHTML')).jsonValue();
+    console.log(thisResultsTitle);
+    //does this seem okay? added the below lines in to write to a file
+    writeStream.write(thisResultsTitle);
+    writeStream.on('finish', () => {
+      console.log('wrote all data to file');
+  });
+  
+  // close the stream
+    writeStream.end();  
+
+  }
+
+  await browser.close();
+
+  console.log('End of processing');
+ }
+
+
+/*
   (async () => {
     const browser = await chromium.launch();
     const page = await browser.newPage();
   
     await page.goto(GOOGLE_NEWS_URL);
-  
-    let results = await page.$$(GOOGLE_RESULTS_SELECTOR);
+    let results = await page.$$(GOOGLE_RESULTS_SELECTOR).waitForNavigation();
   //added below line
-    let writeStream = fs.createWriteStream('output.txt');
-  
+    let writeStream = fs.createWriteStream('./output.txt');
+  //added below line and closed following write stream
     for (var i = 0; i < results.length; i += 1) {
       var thisResultsTitle = await (await results[i].getProperty('innerHTML')).jsonValue();
       console.log(thisResultsTitle);
@@ -52,12 +85,11 @@ for (let index = 0; index < listOfColleges.length; index +=1 ) {
       writeStream.end();  
   
     }
-  
+
     await browser.close();
   })(); 
 }
-
-console.log('End of processing');
-
-// End the program
+*/
+main()
+  // End the program
 process.exit(0);
