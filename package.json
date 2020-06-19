@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/ashleylizg/news_grab#readme",
   "dependencies": {
+    "minimist": "^1.2.5",
     "playwright": "^0.13.0"
   }
 }
