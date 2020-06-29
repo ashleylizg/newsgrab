@@ -15,20 +15,20 @@ const LOCATION_SELECTOR = 'li.active > a';
 let listOfSearchTerms = fs.readFileSync('sample.txt').toString().split(',');
 
 //create an array to append the results to
-var array = [];
+let searchResultsList = [];
 
 // Will loop through search terms inside async function - need async for Playwright browser stuff
 (async function() {
   console.log('Start of async processing');
 
   //initialize object that will be appended to array
-  var object = {};
+  let searchResultData = {};
 
   // Set up headless browser to use then re-use
   const browser = await chromium.launch();
   const page = await browser.newPage();
 
-  for (let i = 0; i < listOfSearchTerms.length; i +=1 ) {
+  for (let i = 0; i < listOfSearchTerms.length; i += 1) {
     console.log('Loop at line ' + i);
     let line = listOfSearchTerms[i];
     if (line === '') continue;
@@ -37,9 +37,8 @@ var array = [];
     console.log('Looking up search term -> ' + searchterm);
 
     //create object for search term
-    object.search_term = searchterm
-    //append search term to array
-    array.push({object: object})
+    searchResultData = {};
+    searchResultData.search_term = searchterm;
 
     // Craft search URL - remove special characters, remove carriage returns
     let thisNewsUrl = GOOGLE_NEWS_URL.replace('COLLEGE', searchterm.replace(/[^a-zA-Z ]/g, '').replace(/\s+/g,'+'));
@@ -53,15 +52,17 @@ var array = [];
     await page.goto(thisNewsUrl);
     let results = await page.$$(thisResultsSelector);
   
-    for (var j = 0; j < results.length; j += 1) {
-      var thisResultsTitle = await (await results[j].getProperty('innerHTML')).jsonValue();
+    let thisResultsTitle = '';
+    searchResultData.results = [];
+
+    for (let j = 0; j < results.length; j += 1) {
+      thisResultsTitle = await (await results[j].getProperty('innerHTML')).jsonValue();
       console.log(thisResultsTitle);
+      searchResultData.results.push(thisResultsTitle);
     }
 
-    // add results to array
-    object.results = thisResultsTitle
-    array.push({object: object})
-    console.log(object);
+    searchResultsList.push(searchResultData);
+    console.log(searchResultData);
   }
 
   // Close browser now that we have gone through all search terms
@@ -70,6 +71,6 @@ var array = [];
   console.log('End of async processing');
 
   // create encode json string
-  var myJSONString = JSON.stringify(array);
-  console.log(array);
+  let searchResultsListJson = JSON.stringify(searchResultsList);
+  console.log(searchResultsListJson);
 })();
