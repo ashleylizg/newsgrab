@@ -117,3 +117,6 @@ dist
 
 # png's come out as test - ignore
 *.png
+
+#output file for results
+output.json

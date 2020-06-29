@@ -73,4 +73,15 @@ let searchResultsList = [];
   // create encode json string
   let searchResultsListJson = JSON.stringify(searchResultsList);
   console.log(searchResultsListJson);
+  //write json output to file
+  fs.writeFile("output.json", searchResultsListJson, 'utf8', function (err) {
+    if (err) {
+        console.log("An error occured while writing JSON Object to File.");
+        return console.log(err);
+    }
+ 
+    console.log("JSON file has been saved.");
+  });
+
 })();
+
