@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ashleylizg/news_grab.git"
+    "url": "git+https://github.com/ashleylizg/news-grab.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ashleylizg/news_grab/issues"
+    "url": "https://github.com/ashleylizg/news-grab/issues"
   },
-  "homepage": "https://github.com/ashleylizg/news_grab#readme",
+  "homepage": "https://github.com/ashleylizg/news-grab#readme",
   "dependencies": {
     "minimist": "^1.2.5",
     "playwright": "^0.13.0"
