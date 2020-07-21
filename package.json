@@ -1,5 +1,5 @@
 {
-  "name": "news_grab",
+  "name": "newsgrab",
   "version": "1.0.0",
   "description": "snag some news hits using headless browser with node.js &amp; playwright",
   "main": "index.js",
@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ashleylizg/news-grab.git"
+    "url": "git+https://github.com/ashleylizg/newsgrab.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ashleylizg/news-grab/issues"
+    "url": "https://github.com/ashleylizg/newsgrab/issues"
   },
-  "homepage": "https://github.com/ashleylizg/news-grab#readme",
+  "homepage": "https://github.com/ashleylizg/newsgrab#readme",
   "dependencies": {
     "minimist": "^1.2.5",
     "playwright": "^0.13.0"
