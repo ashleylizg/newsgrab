@@ -1,4 +1,4 @@
-// news-grab
+// newsgrab
 
 // Parse command line arguments with the Minimist library
 const argv = require('minimist')(process.argv.slice(2));
