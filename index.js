@@ -1,4 +1,11 @@
+// newsgrab
+
+// Parse command line arguments with the Minimist library
+const argv = require('minimist')(process.argv.slice(2));
+
+// Needed dependencies
 const fs = require('fs');
+const path = require('path');
 
 const { chromium } = require('playwright');
 
@@ -10,11 +17,36 @@ const MODAL_BUTTON_SELECTOR = '.modal-footer > button';
 const SEARCH_SELECTOR = 'input[placeholder=Search]';
 const LOCATION_SELECTOR = 'li.active > a';
 
+function printHelp() {
+  console.info('  Usage:');
+  console.info('    newsgrab <path_to_list_of_search_terms> [options]');
+  console.info('  Options:');
+  console.info('    -h, --help       Print this help');
+  process.exit(0);
+}
+
 // MAIN PROGRAM LOGIC
 
-let listOfSearchTerms = fs.readFileSync('file.txt').toString().split(',');
+// See if we should print help
+if (argv['_'].length == 0 || argv['h'] || argv['help']) {
+  printHelp();
+}
 
-//Create an array to append the results to
+const givenTermsFilePath = argv['_'][0];
+
+// Check to see if specified file exists
+try {
+  if (false == fs.existsSync(givenTermsFilePath)) {
+      printHelp();
+  }
+} catch (err) {
+  printHelp();
+}
+
+// File exists so will now try to parse
+let listOfSearchTerms = fs.readFileSync(givenTermsFilePath).toString().split(/\r?\n/);
+
+// Create an array to append the results to
 let searchResultsList = [];
 
 // Will loop through search terms inside async function - need async for Playwright browser stuff
@@ -79,13 +111,13 @@ let searchResultsList = [];
   console.log(searchResultsListJson);
   
   // Write json output to file
-  fs.writeFile("output.json", searchResultsListJson, 'utf8', function (err) {
+  fs.writeFile('output.json', searchResultsListJson, 'utf8', function (err) {
     if (err) {
-        console.log("An error occured while writing JSON Object to File.");
+        console.log('An error occured while writing JSON Object to File.');
         return console.log(err);
     }
  
-    console.log("JSON file has been saved.");
+    console.log('JSON file has been saved.');
   });
 
 })();
