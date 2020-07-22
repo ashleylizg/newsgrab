@@ -11,8 +11,7 @@ Install newsgrab globally.
 npm install -g newsgrab
 ```
 
-TODO change to line sep instead 
-Execute Google News headline searches for a newline separated file to return a JSON file (output.json) of search results.
+Execute Google News headline searches for a line-separated file to return a JSON file (`output.json`) of search results.
 
 ```
 newsgrab <path_to_list_of_search_terms>
