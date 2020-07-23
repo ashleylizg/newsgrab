@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // newsgrab
 
 // Parse command line arguments with the Minimist library
